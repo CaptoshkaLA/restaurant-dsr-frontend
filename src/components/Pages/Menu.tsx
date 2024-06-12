@@ -6,7 +6,6 @@ import { Container, Grid, Card, CardContent, CardMedia, Typography } from '@mui/
 import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const Menu: React.FC = () => {
-  // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const dishes = useSelector((state: RootState) => state.dishes.dishes);
 

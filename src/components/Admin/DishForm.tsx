@@ -27,7 +27,6 @@ const schema = yup.object().shape({
 });
 
 const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
-  // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { control, handleSubmit, reset } = useForm<DishFormData>({
     resolver: yupResolver(schema),

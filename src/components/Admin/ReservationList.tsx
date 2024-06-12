@@ -9,7 +9,6 @@ interface ReservationListProps {
 }
 
 const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
-  // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const handleStatusChange = (id: number, status: 'PENDING' | 'PROCESSED') => {

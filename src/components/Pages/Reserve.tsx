@@ -26,7 +26,6 @@ const schema = yup.object().shape({
 });
 
 const Reserve: React.FC = () => {
-  // const dispatch = useDispatch();
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { control, handleSubmit, reset } = useForm<ReserveFormData>({
     resolver: yupResolver(schema),

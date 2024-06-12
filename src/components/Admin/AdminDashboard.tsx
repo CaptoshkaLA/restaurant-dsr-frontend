@@ -5,9 +5,10 @@ import { fetchReservations } from '../../store/reservationSlice';
 import { Container, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
 import ReservationList from './ReservationList';
 import DishForm from './DishForm';
+import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const AdminDashboard: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const reservations = useSelector((state: RootState) => state.reservations.reservations);
   const dishes = useSelector((state: RootState) => state.dishes.dishes);
 
