@@ -18,7 +18,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
-      // Perform additional checks if necessary, e.g., token expiration
+      // Add additional checks e.g. token expiration and others
     } else {
       dispatch(logout());
     }
