@@ -29,9 +29,14 @@ const Header: React.FC = () => {
           Reserve
         </Button>
         {token ? (
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          <>
+            <Button color="inherit" component={Link} to="/admin/dashboard">
+              Admin Dashboard
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
         ) : (
           <Button color="inherit" component={Link} to="/admin/login">
             Admin
