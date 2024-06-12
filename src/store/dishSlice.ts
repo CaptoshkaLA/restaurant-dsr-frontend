@@ -23,25 +23,43 @@ const initialState: DishState = {
   error: null,
 };
 
-export const fetchDishes = createAsyncThunk('dishes/fetchDishes', async () => {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes`);
-  return response.data;
-});
+const authHeader = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`, // Получаем токен из localStorage
+  },
+};
 
-export const addDish = createAsyncThunk('dishes/addDish', async (dish: Omit<Dish, 'id'>) => {
-  const response = await axios.post(`${process.env.REACT_APP_API_URL}/dishes`, dish);
-  return response.data;
-});
+export const fetchDishes = createAsyncThunk(
+  'dishes/fetchDishes',
+  async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes`, authHeader); // Передаем заголовок
+    return response.data;
+  }
+);
 
-export const updateDish = createAsyncThunk('dishes/updateDish', async (dish: Dish) => {
-  const response = await axios.put(`${process.env.REACT_APP_API_URL}/dishes/${dish.id}`, dish);
-  return response.data;
-});
+export const addDish = createAsyncThunk(
+  'dishes/addDish',
+  async (dish: Omit<Dish, 'id'>) => {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/dishes`, dish, authHeader); // Передаем заголовок
+    return response.data;
+  }
+);
 
-export const deleteDish = createAsyncThunk('dishes/deleteDish', async (id: number) => {
-  await axios.delete(`${process.env.REACT_APP_API_URL}/dishes/${id}`);
-  return id;
-});
+export const updateDish = createAsyncThunk(
+  'dishes/updateDish',
+  async (dish: Dish) => {
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/dishes/${dish.id}`, dish, authHeader); // Передаем заголовок
+    return response.data;
+  }
+);
+
+export const deleteDish = createAsyncThunk(
+  'dishes/deleteDish',
+  async (id: number) => {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/dishes/${id}`, authHeader); // Передаем заголовок
+    return id;
+  }
+);
 
 const dishSlice = createSlice({
   name: 'dishes',

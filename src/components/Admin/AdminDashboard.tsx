@@ -16,6 +16,8 @@ const AdminDashboard: React.FC = () => {
     dispatch(fetchReservations());
   }, [dispatch]);
 
+  console.log('Reservations:', reservations);
+
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
