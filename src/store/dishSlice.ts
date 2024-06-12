@@ -24,22 +24,22 @@ const initialState: DishState = {
 };
 
 export const fetchDishes = createAsyncThunk('dishes/fetchDishes', async () => {
-  const response = await axios.get('/api/dishes');
+  const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes`);
   return response.data;
 });
 
 export const addDish = createAsyncThunk('dishes/addDish', async (dish: Omit<Dish, 'id'>) => {
-  const response = await axios.post('/api/dishes', dish);
+  const response = await axios.post(`${process.env.REACT_APP_API_URL}/dishes`, dish);
   return response.data;
 });
 
 export const updateDish = createAsyncThunk('dishes/updateDish', async (dish: Dish) => {
-  const response = await axios.put(`/api/dishes/${dish.id}`, dish);
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/dishes/${dish.id}`, dish);
   return response.data;
 });
 
 export const deleteDish = createAsyncThunk('dishes/deleteDish', async (id: number) => {
-  await axios.delete(`/api/dishes/${id}`);
+  await axios.delete(`${process.env.REACT_APP_API_URL}/dishes/${id}`);
   return id;
 });
 

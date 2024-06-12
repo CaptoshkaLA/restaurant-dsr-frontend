@@ -27,7 +27,7 @@ const initialState: ReservationState = {
 export const fetchReservations = createAsyncThunk(
   'reservations/fetchReservations',
   async () => {
-    const response = await axios.get('/api/reservations');
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/reservations`);
     return response.data;
   }
 );
@@ -35,7 +35,7 @@ export const fetchReservations = createAsyncThunk(
 export const addReservation = createAsyncThunk(
   'reservations/addReservation',
   async (reservation: Reservation) => {
-    const response = await axios.post('/api/reservations', reservation);
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation);
     return response.data;
   }
 );
@@ -43,7 +43,7 @@ export const addReservation = createAsyncThunk(
 export const updateReservationStatus = createAsyncThunk(
   'reservations/updateReservationStatus',
   async ({ id, status }: { id: number; status: 'PENDING' | 'PROCESSED' }) => {
-    const response = await axios.put(`/api/reservations/${id}/status`, { status });
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/reservations/${id}/status`, { status });
     return response.data;
   }
 );

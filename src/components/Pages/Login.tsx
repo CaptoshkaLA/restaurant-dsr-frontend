@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/authSlice';
 import { RootState } from '../../store';
 import { Container, TextField, Button, Grid, Typography, CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Импортируем useNavigate
+import { useEffect } from 'react';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 
 interface LoginFormData {
@@ -21,8 +22,7 @@ const schema = yup.object().shape({
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const navigate = useNavigate(); // Используйте useNavigate hook
-
+  const navigate = useNavigate(); // Используем useNavigate для перенаправления
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
   });
@@ -32,10 +32,11 @@ const Login: React.FC = () => {
     dispatch(login(data));
   };
 
-  if (token) {
-    navigate("/admin/dashboard"); // Выполните перенаправление с помощью useNavigate
-    return null; // Верните null или что-то другое вместо компонента Redirect
-  }
+  useEffect(() => {
+    if (token) {
+      navigate('/admin/dashboard'); // Перенаправляем пользователя после успешного входа
+    }
+  }, [token, navigate]);
 
   return (
     <Container>
@@ -48,6 +49,7 @@ const Login: React.FC = () => {
             <Controller
               name="email"
               control={control}
+              defaultValue=""
               render={({ field }) => <TextField {...field} label="Email" fullWidth />}
             />
           </Grid>
@@ -55,6 +57,7 @@ const Login: React.FC = () => {
             <Controller
               name="password"
               control={control}
+              defaultValue=""
               render={({ field }) => <TextField {...field} label="Password" type="password" fullWidth />}
             />
           </Grid>
