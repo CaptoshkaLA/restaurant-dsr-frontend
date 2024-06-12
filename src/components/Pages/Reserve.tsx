@@ -42,7 +42,7 @@ const Reserve: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginTop: '1rem' }}>
       <Typography variant="h4" gutterBottom>
         Make a Reservation
       </Typography>

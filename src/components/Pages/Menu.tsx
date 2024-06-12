@@ -14,7 +14,7 @@ const Menu: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container sx={{ marginTop: '1rem' }}>
       <Typography variant="h4" gutterBottom>
         Our Menu
       </Typography>

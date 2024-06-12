@@ -19,7 +19,7 @@ const AdminDashboard: React.FC = () => {
   console.log('Reservations:', reservations);
 
   return (
-    <Container>
+    <Container sx={{ marginTop: '1rem' }}>
       <Typography variant="h4" gutterBottom>
         Admin Dashboard
       </Typography>
