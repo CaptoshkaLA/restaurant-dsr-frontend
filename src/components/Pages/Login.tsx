@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/authSlice';
 import { RootState } from '../../store';
 import { Container, TextField, Button, Grid, Typography, CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Импортируем useNavigate
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 
@@ -22,7 +22,7 @@ const schema = yup.object().shape({
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const navigate = useNavigate(); // Используем useNavigate для перенаправления
+  const navigate = useNavigate();
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
   });
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      navigate('/admin/dashboard'); // Перенаправляем пользователя после успешного входа
+      navigate('/admin/dashboard');
     }
   }, [token, navigate]);
 
