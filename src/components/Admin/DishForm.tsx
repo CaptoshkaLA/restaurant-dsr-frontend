@@ -97,19 +97,6 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
           </Grid>
         </Grid>
       </form>
-      <Typography variant="h6" gutterBottom>
-        Current Dishes
-      </Typography>
-      <Grid container spacing={2}>
-        {dishes.map((dish) => (
-          <Grid item xs={12} key={dish.id}>
-            <Typography variant="body1">{dish.name}</Typography>
-            <Button variant="contained" color="secondary" onClick={() => dispatch(deleteDish(dish.id))}>
-              Delete
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
     </Container>
   );
 };
