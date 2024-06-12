@@ -25,7 +25,7 @@ const initialState: DishState = {
 
 const authHeader = {
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`, // Получаем токен из localStorage
+    Authorization: `Bearer ${localStorage.getItem('token')}`, // Getting a token from localStorage
   },
 };
 
