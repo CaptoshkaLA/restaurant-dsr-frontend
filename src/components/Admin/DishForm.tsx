@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { addDish, updateDish, deleteDish, fetchDishes } from '../../store/dishSlice';
-import { TextField, Button, Container, Grid, Typography } from '@mui/material';
-import {ThunkDispatch} from "@reduxjs/toolkit";
+import { TextField, Button, Container, Grid, Typography, Snackbar } from '@mui/material';
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 interface DishFormData {
   name: string;
@@ -31,6 +31,8 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
   const { control, handleSubmit, reset } = useForm<DishFormData>({
     resolver: yupResolver(schema),
   });
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     dispatch(fetchDishes());
@@ -39,6 +41,17 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
   const onSubmit = (data: DishFormData) => {
     dispatch(addDish(data));
     reset();
+  };
+
+  useEffect(() => {
+    if (dishes.length > 0) {
+      setShowSnackbar(true);
+      setSnackbarMessage('Dish successfully added!');
+    }
+  }, [dishes]);
+
+  const handleCloseSnackbar = () => {
+    setShowSnackbar(false);
   };
 
   return (
@@ -97,6 +110,9 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
           </Grid>
         </Grid>
       </form>
+      <Snackbar open={showSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Typography variant="body1">{snackbarMessage}</Typography>
+      </Snackbar>
     </Container>
   );
 };
