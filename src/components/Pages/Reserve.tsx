@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { addReservation } from '../../store/reservationSlice';
-import { Container, TextField, Button, Grid, Typography } from '@mui/material';
-import {ThunkDispatch} from "@reduxjs/toolkit";
+import { Container, TextField, Button, Grid, Typography, Snackbar } from '@mui/material';
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 interface ReserveFormData {
   name: string;
@@ -39,14 +39,31 @@ const Reserve: React.FC = () => {
     },
   });
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   const onSubmit = (data: ReserveFormData) => {
+    const { date, time, ...rest } = data;
+    const dateTimeString = new Date(`${date}T${time}`).toISOString();
+
     const reservationData = {
-      ...data,
-      id: Math.floor(Math.random() * 1000), // Генерация временного id
-      status: 'PENDING' as const, // Установка статуса "PENDING"
+      ...rest,
+      date: date,
+      time: dateTimeString,
+      id: Math.floor(Math.random() * 1000),
+      status: 'PENDING' as const,
     };
+
     dispatch(addReservation(reservationData));
     reset();
+
+    // Show snackbar with success message
+    setSnackbarMessage('Reservation successfully created!');
+    setShowSnackbar(true);
+  };
+
+  const handleCloseSnackbar = () => {
+    setShowSnackbar(false);
   };
 
   return (
@@ -105,6 +122,9 @@ const Reserve: React.FC = () => {
           </Grid>
         </Grid>
       </form>
+        <Snackbar open={showSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+          <Typography variant="body1">{snackbarMessage}</Typography>
+        </Snackbar>
     </Container>
   );
 };
