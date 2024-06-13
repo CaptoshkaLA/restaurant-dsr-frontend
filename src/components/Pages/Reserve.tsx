@@ -29,6 +29,14 @@ const Reserve: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { control, handleSubmit, reset } = useForm<ReserveFormData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      date: '',
+      time: '',
+      guests: 1,
+    },
   });
 
   const onSubmit = (data: ReserveFormData) => {
@@ -87,7 +95,7 @@ const Reserve: React.FC = () => {
             <Controller
               name="guests"
               control={control}
-              render={({ field }) => <TextField {...field} label="Number of Guests" type="number" fullWidth />}
+              render={({ field }) => <TextField {...field} label="Number of Guests" type="number" inputProps={{ min: 1 }} fullWidth />}
             />
           </Grid>
           <Grid item xs={12}>
