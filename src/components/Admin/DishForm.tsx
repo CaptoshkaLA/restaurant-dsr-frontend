@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { addDish, updateDish, deleteDish, fetchDishes } from '../../store/dishSlice';
+import { useDispatch } from 'react-redux';
+import { addDish, fetchDishes } from '../../store/dishSlice';
 import { TextField, Button, Container, Grid, Typography, Snackbar } from '@mui/material';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 
