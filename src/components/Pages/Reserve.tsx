@@ -50,8 +50,6 @@ const Reserve: React.FC = () => {
       ...rest,
       date: date,
       time: dateTimeString,
-      id: Math.floor(Math.random() * 1000),
-      status: 'PENDING' as const,
     };
 
     dispatch(addReservation(reservationData));

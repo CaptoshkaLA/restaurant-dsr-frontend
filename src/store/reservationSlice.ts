@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Reservation {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   phone: string;
   date: string;
   time: string;
   guests: number;
-  status: 'PENDING' | 'PROCESSED';
+  status?: 'PENDING' | 'PROCESSED';
 }
 
 interface ReservationState {
