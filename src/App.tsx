@@ -8,6 +8,7 @@ import Reserve from './components/Pages/Reserve';
 import Login from './components/Pages/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Header from './components/Layout/Header';
+import ContactInfo from './components/Pages/ContactInfo';
 import { Container } from '@mui/material';
 import { logout } from './store/authSlice';
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route path="/reserve" element={<Reserve />} />
           <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={token ? <AdminDashboard /> : <Navigate to="/admin/login" />} />
+          <Route path="/contacts" element={<ContactInfo />} />
         </Routes>
       </Container>
     </Router>
