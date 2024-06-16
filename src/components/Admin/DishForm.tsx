@@ -38,7 +38,12 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
   }, [dispatch]);
 
   const onSubmit = (data: DishFormData) => {
-    dispatch(addDish(data));
+    // Transform ingredients from multiline string to array which separated by commas
+    const transformedData = {
+      ...data,
+      ingredients: data.ingredients.split('\n').map((ingredient) => ingredient.trim()).join(','),
+    };
+    dispatch(addDish(transformedData));
     reset();
     setShowSnackbar(true);
     setSnackbarMessage('Dish successfully added!');
@@ -66,7 +71,9 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="description"
               control={control}
-              render={({ field }) => <TextField {...field} label="Description" fullWidth />}
+              render={({ field }) => (
+                <TextField {...field} label="Description" multiline fullWidth />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
@@ -80,14 +87,18 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="recipe"
               control={control}
-              render={({ field }) => <TextField {...field} label="Recipe" fullWidth />}
+              render={({ field }) => (
+                <TextField {...field} label="Recipe" multiline fullWidth />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="ingredients"
               control={control}
-              render={({ field }) => <TextField {...field} label="Ingredients" fullWidth />}
+              render={({ field }) => (
+                <TextField {...field} label="Ingredients (each ingredient on a new line)" multiline fullWidth />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
