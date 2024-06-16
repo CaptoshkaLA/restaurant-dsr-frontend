@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { logout } from '../../store/authSlice';
+import { ROUTES } from '../../constants';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,21 +17,21 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
+        <Typography variant="h6" component={Link} to={ROUTES.HOME} sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
           Restaurant DSR
         </Typography>
-        <Button color="inherit" component={Link} to="/contacts">
+        <Button color="inherit" component={Link} to={ROUTES.CONTACTS}>
           Contacts
         </Button>
-        <Button color="inherit" component={Link} to="/menu">
+        <Button color="inherit" component={Link} to={ROUTES.MENU}>
           Menu
         </Button>
-        <Button color="inherit" component={Link} to="/reserve">
+        <Button color="inherit" component={Link} to={ROUTES.RESERVE}>
           Reserve
         </Button>
         {token ? (
           <>
-            <Button color="inherit" component={Link} to="/admin/dashboard">
+            <Button color="inherit" component={Link} to={ROUTES.ADMIN_DASHBOARD}>
               Admin Dashboard
             </Button>
             <Button color="inherit" onClick={handleLogout}>
@@ -38,7 +39,7 @@ const Header: React.FC = () => {
             </Button>
           </>
         ) : (
-          <Button color="inherit" component={Link} to="/admin/login">
+          <Button color="inherit" component={Link} to={ROUTES.ADMIN_LOGIN}>
             Admin
           </Button>
         )}

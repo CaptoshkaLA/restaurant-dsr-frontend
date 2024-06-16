@@ -12,6 +12,7 @@ import ContactInfo from './components/Pages/ContactInfo';
 import { Container } from '@mui/material';
 import { logout, refreshToken } from './store/authSlice';
 import {ThunkDispatch} from "@reduxjs/toolkit";
+import { ROUTES } from './constants';
 
 const App: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -35,12 +36,12 @@ const App: React.FC = () => {
       <Header />
       <Container>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/reserve" element={<Reserve />} />
-          <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin/dashboard" element={token ? <AdminDashboard /> : <Navigate to="/admin/login" />} />
-          <Route path="/contacts" element={<ContactInfo />} />
+          <Route path={ROUTES.HOME} element={<Home />} />
+          <Route path={ROUTES.MENU} element={<Menu />} />
+          <Route path={ROUTES.RESERVE} element={<Reserve />} />
+          <Route path={ROUTES.ADMIN_LOGIN} element={<Login />} />
+          <Route path={ROUTES.ADMIN_DASHBOARD} element={token ? <AdminDashboard /> : <Navigate to={ROUTES.ADMIN_LOGIN} />} />
+          <Route path={ROUTES.CONTACTS} element={<ContactInfo />} />
         </Routes>
       </Container>
     </Router>
