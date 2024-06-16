@@ -19,9 +19,6 @@ const Header: React.FC = () => {
         <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
           Restaurant DSR
         </Typography>
-        <Button color="inherit" component={Link} to="/">
-          Home
-        </Button>
         <Button color="inherit" component={Link} to="/contacts">
           Contacts
         </Button>

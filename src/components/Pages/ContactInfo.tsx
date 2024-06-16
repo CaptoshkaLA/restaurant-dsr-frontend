@@ -8,7 +8,7 @@ const mapContainerStyle = {
   height: '400px',
 };
 
-// Координаты воронежского офиса dsr
+// Coordinates of the Voronezh DSR office
 const center = {
   lat: 51.6625757,
   lng: 39.183439,
@@ -18,21 +18,23 @@ const ContactInfo: React.FC = () => {
   const [mapType, setMapType] = useState<'google' | 'yandex'>('google');
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '';
   const yandexMapsApiKey = process.env.REACT_APP_YANDEX_MAPS_API_KEY || '';
+  console.log('googleMapsApiKey: ' + googleMapsApiKey)
+  console.log('yandexMapsApiKey: ' + yandexMapsApiKey)
 
   return (
     <Container sx={{ marginTop: '1rem' }}>
       <Typography variant="h4" gutterBottom>
-        Контакты
+        Contacts
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
             Restaurant address
           </Typography>
           <Typography>
             ДЦ "Тезис", Ulitsa Svobody, 69, Voronezh, Voronezh Oblast, 394006
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
             Contact info
           </Typography>
           <Typography>
@@ -41,7 +43,7 @@ const ContactInfo: React.FC = () => {
           <Typography>
             Email: contact@dsr-corporation.com
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
             Working hours
           </Typography>
           <Typography>
