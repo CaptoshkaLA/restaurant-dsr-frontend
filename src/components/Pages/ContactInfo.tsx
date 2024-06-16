@@ -1,6 +1,7 @@
-import React from 'react';
-import { Container, Typography, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Typography, Grid, Box, Button } from '@mui/material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const mapContainerStyle = {
   width: '100%',
@@ -14,6 +15,9 @@ const center = {
 };
 
 const ContactInfo: React.FC = () => {
+  const [mapType, setMapType] = useState<'google' | 'yandex'>('google');
+  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '';
+  const yandexMapsApiKey = process.env.REACT_APP_YANDEX_MAPS_API_KEY || '';
 
   return (
     <Container sx={{ marginTop: '1rem' }}>
@@ -45,11 +49,34 @@ const ContactInfo: React.FC = () => {
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
-          <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''}>
-            <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
-              <Marker position={center} />
-            </GoogleMap>
-          </LoadScript>
+          <Box display="flex" justifyContent="center" marginBottom={2}>
+            <Button
+              variant={mapType === 'google' ? 'contained' : 'outlined'}
+              onClick={() => setMapType('google')}
+              sx={{ marginRight: 1 }}
+            >
+              Google Maps
+            </Button>
+            <Button
+              variant={mapType === 'yandex' ? 'contained' : 'outlined'}
+              onClick={() => setMapType('yandex')}
+            >
+              Yandex Maps
+            </Button>
+          </Box>
+          {mapType === 'google' ? (
+            <LoadScript googleMapsApiKey={googleMapsApiKey}>
+              <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
+                <Marker position={center} />
+              </GoogleMap>
+            </LoadScript>
+          ) : (
+            <YMaps query={{ apikey: yandexMapsApiKey }}>
+              <Map defaultState={{ center: [center.lat, center.lng], zoom: 10 }} width="100%" height="400px">
+                <Placemark geometry={[center.lat, center.lng]} />
+              </Map>
+            </YMaps>
+          )}
         </Grid>
       </Grid>
     </Container>
