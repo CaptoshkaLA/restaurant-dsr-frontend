@@ -35,8 +35,8 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
             <TableCell>{reservation.name}</TableCell>
             <TableCell>{reservation.email}</TableCell>
             <TableCell>{reservation.phone}</TableCell>
-            <TableCell>{reservation.date}</TableCell>
-            <TableCell>{reservation.time}</TableCell>
+            <TableCell>{new Date(reservation.date).toLocaleDateString()}</TableCell>
+            <TableCell>{new Date(reservation.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</TableCell>
             <TableCell>{reservation.guests}</TableCell>
             <TableCell>{reservation.status}</TableCell>
             <TableCell>
