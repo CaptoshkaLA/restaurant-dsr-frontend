@@ -9,13 +9,14 @@ import Login from './components/Pages/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Header from './components/Layout/Header';
 import ContactInfo from './components/Pages/ContactInfo';
-import { Container } from '@mui/material';
+import { Container, Snackbar, Alert } from '@mui/material';
 import { logout, refreshToken } from './store/authSlice';
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import { ROUTES } from './constants';
 
 const App: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
+  const error = useSelector((state: RootState) => state.auth.error);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   useEffect(() => {
@@ -35,6 +36,11 @@ const App: React.FC = () => {
     <Router>
       <Header />
       <Container>
+        <Snackbar open={!!error} autoHideDuration={6000}>
+          <Alert severity="error">
+            {error}
+          </Alert>
+        </Snackbar>
         <Routes>
           <Route path={ROUTES.HOME} element={<Home />} />
           <Route path={ROUTES.MENU} element={<Menu />} />

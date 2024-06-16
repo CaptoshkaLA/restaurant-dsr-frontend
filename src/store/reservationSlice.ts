@@ -33,6 +33,12 @@ const getAuthHeader = () => {
   };
 };
 
+// Общий обработчик ошибок для всех асинхронных действий
+const handleAsyncError = (state: ReservationState, action: any) => {
+  state.loading = false;
+  state.error = action.payload || 'Request failed';
+};
+
 export const fetchReservations = createAsyncThunk(
   'reservations/fetchReservations',
   async () => {
@@ -43,10 +49,14 @@ export const fetchReservations = createAsyncThunk(
 
 export const addReservation = createAsyncThunk(
   'reservations/addReservation',
-  async (reservation: Reservation) => {
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation, getAuthHeader());
+  async (reservation: Reservation, { rejectWithValue }) => {
     // console.log(response)
-    return response.data;
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation, getAuthHeader());
+      return response.data;
+    } catch (error) {
+      return rejectWithValue('Failed to add reservation');
+    }
   }
 );
 
@@ -73,8 +83,7 @@ const reservationSlice = createSlice({
         state.reservations = action.payload;
       })
       .addCase(fetchReservations.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch reservations';
+        handleAsyncError(state, action);
       })
       .addCase(updateReservationStatus.fulfilled, (state, action) => {
         const index = state.reservations.findIndex((r) => r.id === action.payload.id);
@@ -84,6 +93,9 @@ const reservationSlice = createSlice({
       })
       .addCase(addReservation.fulfilled, (state, action) => {
         state.reservations.push(action.payload);
+      })
+      .addCase(addReservation.rejected, (state, action) => {
+        handleAsyncError(state, action);
       });
   },
 });
