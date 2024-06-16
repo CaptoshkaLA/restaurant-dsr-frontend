@@ -10,16 +10,21 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import Header from './components/Layout/Header';
 import ContactInfo from './components/Pages/ContactInfo';
 import { Container } from '@mui/material';
-import { logout } from './store/authSlice';
+import { logout, refreshToken } from './store/authSlice';
+import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const App: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
-      // Add additional checks e.g. token expiration and others
+      const interval = setInterval(() => {
+        dispatch(refreshToken());
+      }, 15 * 60 * 1000); // Refresh token every 15 minutes
+
+      return () => clearInterval(interval);
     } else {
       dispatch(logout());
     }

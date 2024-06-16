@@ -21,6 +21,20 @@ export const login = createAsyncThunk(
   }
 );
 
+export const refreshToken = createAsyncThunk(
+  'auth/refreshToken',
+  async () => {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    const { token } = response.data;
+    localStorage.setItem('token', token);
+    return token;
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
