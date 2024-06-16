@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { addDish, fetchDishes } from '../../store/dishSlice';
-import { TextField, Button, Container, Grid, Typography, Snackbar } from '@mui/material';
+import { TextField, Button, Container, Grid, Typography, Snackbar, Alert } from '@mui/material';
 import { ThunkDispatch } from "@reduxjs/toolkit";
 
 interface DishFormData {
@@ -13,7 +13,7 @@ interface DishFormData {
   shortDescription: string;
   recipe: string;
   ingredients: string;
-  imageUrl: string;
+  imageUrl?: string; // Сделал необязательным для того, чтобы можно было указать ссылку на дефолтное изображение
 }
 
 const schema = yup.object().shape({
@@ -22,12 +22,14 @@ const schema = yup.object().shape({
   shortDescription: yup.string().required('Short Description is required'),
   recipe: yup.string().required('Recipe is required'),
   ingredients: yup.string().required('Ingredients are required'),
-  imageUrl: yup.string().required('Image URL is required'),
+  imageUrl: yup.string(),
 });
+
+const defaultImageUrl = 'https://i.ytimg.com/vi/Ht88VUpnzG0/maxresdefault.jpg';
 
 const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const { control, handleSubmit, reset } = useForm<DishFormData>({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<DishFormData>({
     resolver: yupResolver(schema),
   });
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -42,6 +44,7 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
     const transformedData = {
       ...data,
       ingredients: data.ingredients.split('\n').map((ingredient) => ingredient.trim()).join(','),
+      imageUrl: data.imageUrl || defaultImageUrl,
     };
     dispatch(addDish(transformedData));
     reset();
@@ -64,15 +67,32 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="name"
               control={control}
-              render={({ field }) => <TextField {...field} label="Name" fullWidth />}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Name *"
+                  fullWidth
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="description"
               control={control}
+              defaultValue=""
               render={({ field }) => (
-                <TextField {...field} label="Description" multiline fullWidth />
+                <TextField
+                  {...field}
+                  label="Description *"
+                  multiline
+                  fullWidth
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
+                />
               )}
             />
           </Grid>
@@ -80,15 +100,32 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="shortDescription"
               control={control}
-              render={({ field }) => <TextField {...field} label="Short Description" fullWidth />}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Short Description *"
+                  fullWidth
+                  error={!!errors.shortDescription}
+                  helperText={errors.shortDescription?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="recipe"
               control={control}
+              defaultValue=""
               render={({ field }) => (
-                <TextField {...field} label="Recipe" multiline fullWidth />
+                <TextField
+                  {...field}
+                  label="Recipe *"
+                  multiline
+                  fullWidth
+                  error={!!errors.recipe}
+                  helperText={errors.recipe?.message}
+                />
               )}
             />
           </Grid>
@@ -96,8 +133,16 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="ingredients"
               control={control}
+              defaultValue=""
               render={({ field }) => (
-                <TextField {...field} label="Ingredients (each ingredient on a new line)" multiline fullWidth />
+                <TextField
+                  {...field}
+                  label="Ingredients * (each ingredient on a new line)"
+                  multiline
+                  fullWidth
+                  error={!!errors.ingredients}
+                  helperText={errors.ingredients?.message}
+                />
               )}
             />
           </Grid>
@@ -105,7 +150,16 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
             <Controller
               name="imageUrl"
               control={control}
-              render={({ field }) => <TextField {...field} label="Image URL" fullWidth />}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Image URL"
+                  fullWidth
+                  error={!!errors.imageUrl}
+                  helperText={errors.imageUrl?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
@@ -116,7 +170,9 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
         </Grid>
       </form>
       <Snackbar open={showSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Typography variant="body1">{snackbarMessage}</Typography>
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          {snackbarMessage}
+        </Alert>
       </Snackbar>
     </Container>
   );
