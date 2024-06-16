@@ -24,16 +24,19 @@ const initialState: ReservationState = {
   error: null,
 };
 
-const authHeader = {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`, // Getting a token from localStorage
-  },
+const getAuthHeader = () => {
+  const token = localStorage.getItem('token');
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '', // Getting a token from localStorage
+    },
+  };
 };
 
 export const fetchReservations = createAsyncThunk(
   'reservations/fetchReservations',
   async () => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/reservations`, authHeader);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/reservations`, getAuthHeader());
     return response.data;
   }
 );
@@ -41,7 +44,7 @@ export const fetchReservations = createAsyncThunk(
 export const addReservation = createAsyncThunk(
   'reservations/addReservation',
   async (reservation: Reservation) => {
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation, authHeader);
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation, getAuthHeader());
     return response.data;
   }
 );
@@ -49,7 +52,7 @@ export const addReservation = createAsyncThunk(
 export const updateReservationStatus = createAsyncThunk(
   'reservations/updateReservationStatus',
   async ({ id, status }: { id: number; status: 'PENDING' | 'PROCESSED' }) => {
-    const response = await axios.put(`${process.env.REACT_APP_API_URL}/reservations/${id}/status`, { status }, authHeader);
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/reservations/${id}/status`, { status }, getAuthHeader());
     return response.data;
   }
 );

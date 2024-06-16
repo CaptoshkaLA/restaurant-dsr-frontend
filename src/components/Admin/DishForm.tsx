@@ -40,14 +40,9 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
   const onSubmit = (data: DishFormData) => {
     dispatch(addDish(data));
     reset();
+    setShowSnackbar(true);
+    setSnackbarMessage('Dish successfully added!');
   };
-
-  useEffect(() => {
-    if (dishes.length > 0) {
-      setShowSnackbar(true);
-      setSnackbarMessage('Dish successfully added!');
-    }
-  }, [dishes]);
 
   const handleCloseSnackbar = () => {
     setShowSnackbar(false);
