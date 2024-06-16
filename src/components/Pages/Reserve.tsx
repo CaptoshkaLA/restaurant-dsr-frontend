@@ -17,17 +17,17 @@ interface ReserveFormData {
 }
 
 const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
+  name: yup.string().matches(/^\D+$/, 'Name should not contain numbers').required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string().required('Phone number is required'),
+  phone: yup.string().matches(/^\+?\d{11}$/, 'Invalid phone number').required('Phone number is required'),
   date: yup.string().required('Date is required'),
   time: yup.string().required('Time is required'),
-  guests: yup.number().min(1).required('Number of guests is required'),
+  guests: yup.number().min(1, 'Must be at least 1 guest').required('Number of guests is required'),
 });
 
 const Reserve: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const { control, handleSubmit, reset } = useForm<ReserveFormData>({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<ReserveFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
@@ -75,42 +75,99 @@ const Reserve: React.FC = () => {
             <Controller
               name="name"
               control={control}
-              render={({ field }) => <TextField {...field} label="Name" fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Name *"
+                  fullWidth
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="email"
               control={control}
-              render={({ field }) => <TextField {...field} label="Email" fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email *"
+                  fullWidth
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="phone"
               control={control}
-              render={({ field }) => <TextField {...field} label="Phone" fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Phone *"
+                  fullWidth
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="date"
               control={control}
-              render={({ field }) => <TextField {...field} label="Date" type="date" InputLabelProps={{ shrink: true }} fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Date *"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.date}
+                  helperText={errors.date?.message}
+                  inputProps={{
+                    min: new Date().toISOString().split('T')[0]
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="time"
               control={control}
-              render={({ field }) => <TextField {...field} label="Time" type="time" InputLabelProps={{ shrink: true }} fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Time *"
+                  type="time"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.time}
+                  helperText={errors.time?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <Controller
               name="guests"
               control={control}
-              render={({ field }) => <TextField {...field} label="Number of Guests" type="number" inputProps={{ min: 1 }} fullWidth />}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Number of Guests *"
+                  type="number"
+                  inputProps={{ min: 1 }}
+                  fullWidth
+                  error={!!errors.guests}
+                  helperText={errors.guests?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
@@ -120,9 +177,9 @@ const Reserve: React.FC = () => {
           </Grid>
         </Grid>
       </form>
-        <Snackbar open={showSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-          <Typography variant="body1">{snackbarMessage}</Typography>
-        </Snackbar>
+      <Snackbar open={showSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Typography variant="body1">{snackbarMessage}</Typography>
+      </Snackbar>
     </Container>
   );
 };

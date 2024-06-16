@@ -154,7 +154,7 @@ const DishForm: React.FC<{ dishes: any[] }> = ({ dishes }) => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Image URL"
+                  label="Image URL (it is not necessary to fill in)"
                   fullWidth
                   error={!!errors.imageUrl}
                   helperText={errors.imageUrl?.message}
