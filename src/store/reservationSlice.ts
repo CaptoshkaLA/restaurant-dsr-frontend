@@ -45,6 +45,7 @@ export const addReservation = createAsyncThunk(
   'reservations/addReservation',
   async (reservation: Reservation) => {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/reservations`, reservation, getAuthHeader());
+    // console.log(response)
     return response.data;
   }
 );

@@ -11,8 +11,7 @@ interface ReserveFormData {
   name: string;
   email: string;
   phone: string;
-  date: string;
-  time: string;
+  datetime: string; // Общее поле для даты и времени
   guests: number;
 }
 
@@ -20,8 +19,7 @@ const schema = yup.object().shape({
   name: yup.string().matches(/^\D+$/, 'Name should not contain numbers').required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   phone: yup.string().matches(/^\+?\d{11}$/, 'Invalid phone number').required('Phone number is required'),
-  date: yup.string().required('Date is required'),
-  time: yup.string().required('Time is required'),
+  datetime: yup.string().required('Date and Time are required'),
   guests: yup.number().min(1, 'Must be at least 1 guest').required('Number of guests is required'),
 });
 
@@ -33,8 +31,7 @@ const Reserve: React.FC = () => {
       name: '',
       email: '',
       phone: '',
-      date: '',
-      time: '',
+      datetime: '',
       guests: 1,
     },
   });
@@ -43,19 +40,22 @@ const Reserve: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const onSubmit = (data: ReserveFormData) => {
-    const { date, time, ...rest } = data;
-    const dateTimeString = new Date(`${date}T${time}`).toISOString();
+    const { datetime, ...rest } = data;
+
+    const selectedDateTime = new Date(datetime);
+
+    const formattedDate = selectedDateTime.toISOString().slice(0, 10); // YYYY-MM-DD
+    const formattedTime = selectedDateTime.toISOString().slice(11, 16); // HH:MM
 
     const reservationData = {
       ...rest,
-      date: date,
-      time: dateTimeString,
+      date: formattedDate,
+      time: `${formattedDate}T${formattedTime}:00.000Z`,
     };
 
     dispatch(addReservation(reservationData));
     reset();
 
-    // Show snackbar with success message
     setSnackbarMessage('Reservation successfully created!');
     setShowSnackbar(true);
   };
@@ -118,37 +118,20 @@ const Reserve: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Controller
-              name="date"
+              name="datetime"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Date *"
-                  type="date"
+                  label="Date and Time *"
+                  type="datetime-local"
                   InputLabelProps={{ shrink: true }}
                   fullWidth
-                  error={!!errors.date}
-                  helperText={errors.date?.message}
+                  error={!!errors.datetime}
+                  helperText={errors.datetime?.message}
                   inputProps={{
-                    min: new Date().toISOString().split('T')[0]
+                    min: new Date().toISOString().slice(0, 16),
                   }}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Controller
-              name="time"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Time *"
-                  type="time"
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  error={!!errors.time}
-                  helperText={errors.time?.message}
                 />
               )}
             />
