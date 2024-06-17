@@ -39,7 +39,7 @@ const Login: React.FC = () => {
   }, [token, navigate]);
 
   return (
-    <Container>
+    <Container sx={{ marginTop: '1rem' }}>
       <Typography variant="h4" gutterBottom>
         Admin Login
       </Typography>
