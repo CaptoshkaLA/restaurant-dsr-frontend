@@ -4,8 +4,8 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const mapContainerStyle = {
-  width: '100%',
-  height: '400px',
+  width: '130%',
+  height: '500px',
 };
 
 // Coordinates of the Voronezh DSR office
@@ -28,13 +28,13 @@ const ContactInfo: React.FC = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '2rem' }}>
             Restaurant address
           </Typography>
           <Typography>
             ДЦ "Тезис", Ulitsa Svobody, 69, Voronezh, Voronezh Oblast, 394006
           </Typography>
-          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '2rem' }}>
             Contact info
           </Typography>
           <Typography>
@@ -43,7 +43,7 @@ const ContactInfo: React.FC = () => {
           <Typography>
             Email: contact@dsr-corporation.com
           </Typography>
-          <Typography variant="h6" gutterBottom sx={{ marginTop: '1rem' }}>
+          <Typography variant="h6" gutterBottom sx={{ marginTop: '2rem' }}>
             Working hours
           </Typography>
           <Typography>
@@ -74,7 +74,7 @@ const ContactInfo: React.FC = () => {
             </LoadScript>
           ) : (
             <YMaps query={{ apikey: yandexMapsApiKey }}>
-              <Map defaultState={{ center: [center.lat, center.lng], zoom: 10 }} width="100%" height="400px">
+              <Map defaultState={{ center: [center.lat, center.lng], zoom: 10 }} style={mapContainerStyle}>
                 <Placemark geometry={[center.lat, center.lng]} />
               </Map>
             </YMaps>
