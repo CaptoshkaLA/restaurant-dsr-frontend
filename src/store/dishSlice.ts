@@ -25,10 +25,13 @@ const initialState: DishState = {
   error: null,
 };
 
-const authHeader = {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`, // Getting a token from localStorage
-  },
+const getAuthHeader = () => {
+  const token = localStorage.getItem('token'); // Getting a token from localStorage
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
 };
 
 // Общий обработчик ошибок для всех асинхронных действий
@@ -41,7 +44,7 @@ export const fetchDishes = createAsyncThunk(
   'dishes/fetchDishes',
   async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes`, authHeader);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes`, getAuthHeader());
       return response.data;
     } catch (error) {
       return Promise.reject('Failed to fetch dishes');
@@ -53,7 +56,7 @@ export const fetchDish = createAsyncThunk(
   'dishes/fetchDish',
   async (id: number) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes/${id}`, authHeader);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes/${id}`, getAuthHeader());
       return response.data;
     } catch (error) {
       return Promise.reject('Failed to fetch dish');
@@ -65,7 +68,7 @@ export const addDish = createAsyncThunk(
   'dishes/addDish',
   async (dish: Omit<Dish, 'id'>, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/dishes`, dish, authHeader);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/dishes`, dish, getAuthHeader());
       return response.data;
     } catch (error) {
       return rejectWithValue('Failed to add dish');
@@ -77,7 +80,7 @@ export const updateDish = createAsyncThunk(
   'dishes/updateDish',
   async (dish: Dish, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/dishes/${dish.id}`, dish, authHeader);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/dishes/${dish.id}`, dish, getAuthHeader());
       return response.data;
     } catch (error) {
       return rejectWithValue('Failed to update dish');
@@ -89,7 +92,7 @@ export const deleteDish = createAsyncThunk(
   'dishes/deleteDish',
   async (id: number, { rejectWithValue }) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/dishes/${id}`, authHeader);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/dishes/${id}`, getAuthHeader());
       return id;
     } catch (error) {
       return rejectWithValue('Failed to delete dish');
