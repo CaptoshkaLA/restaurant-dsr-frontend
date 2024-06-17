@@ -13,12 +13,14 @@ interface Dish {
 
 interface DishState {
   dishes: Dish[];
+  selectedDish: Dish | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: DishState = {
   dishes: [],
+  selectedDish: null,
   loading: false,
   error: null,
 };
@@ -43,6 +45,18 @@ export const fetchDishes = createAsyncThunk(
       return response.data;
     } catch (error) {
       return Promise.reject('Failed to fetch dishes');
+    }
+  }
+);
+
+export const fetchDish = createAsyncThunk(
+  'dishes/fetchDish',
+  async (id: number) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dishes/${id}`, authHeader);
+      return response.data;
+    } catch (error) {
+      return Promise.reject('Failed to fetch dish');
     }
   }
 );
@@ -98,6 +112,18 @@ const dishSlice = createSlice({
         state.dishes = action.payload;
       })
       .addCase(fetchDishes.rejected, (state, action) => {
+        handleAsyncError(state, action);
+      })
+      .addCase(fetchDish.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.selectedDish = null;
+      })
+      .addCase(fetchDish.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedDish = action.payload;
+      })
+      .addCase(fetchDish.rejected, (state, action) => {
         handleAsyncError(state, action);
       })
       .addCase(addDish.fulfilled, (state, action) => {

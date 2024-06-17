@@ -9,6 +9,7 @@ import Login from './components/Pages/Login';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import Header from './components/Layout/Header';
 import ContactInfo from './components/Pages/ContactInfo';
+import DishDetail from './components/Pages/DishDetail';
 import { Container, Snackbar, Alert } from '@mui/material';
 import { logout, refreshToken } from './store/authSlice';
 import {ThunkDispatch} from "@reduxjs/toolkit";
@@ -48,6 +49,7 @@ const App: React.FC = () => {
           <Route path={ROUTES.ADMIN_LOGIN} element={<Login />} />
           <Route path={ROUTES.ADMIN_DASHBOARD} element={token ? <AdminDashboard /> : <Navigate to={ROUTES.ADMIN_LOGIN} />} />
           <Route path={ROUTES.CONTACTS} element={<ContactInfo />} />
+          <Route path={`${ROUTES.MENU}/:id`} element={<DishDetail />} />
         </Routes>
       </Container>
     </Router>
