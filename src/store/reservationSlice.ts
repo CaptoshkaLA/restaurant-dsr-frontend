@@ -68,6 +68,17 @@ export const updateReservationStatus = createAsyncThunk(
   }
 );
 
+export const updateReservationDateTime = createAsyncThunk(
+  'reservations/updateReservationDateTime',
+  async ({ id, date, time }: { id: number; date: string; time: string }) => {
+    // console.log(id)
+    const formattedTime = `${time}:00.000Z`;
+    const dateTime = `${date}T${formattedTime}`;
+    const response = await axios.put(`${process.env.REACT_APP_API_URL}/reservations/${id}/datetime`, { date: date, time: dateTime }, getAuthHeader());
+    return response.data;
+  }
+);
+
 const reservationSlice = createSlice({
   name: 'reservations',
   initialState,
@@ -89,6 +100,13 @@ const reservationSlice = createSlice({
         const index = state.reservations.findIndex((r) => r.id === action.payload.id);
         if (index !== -1) {
           state.reservations[index] = action.payload;
+        }
+      })
+      .addCase(updateReservationDateTime.fulfilled, (state, action) => {
+        const index = state.reservations.findIndex((r) => r.id === action.payload.id);
+        if (index !== -1) {
+          state.reservations[index].date = action.payload.date;
+          state.reservations[index].time = action.payload.time;
         }
       })
       .addCase(addReservation.fulfilled, (state, action) => {
