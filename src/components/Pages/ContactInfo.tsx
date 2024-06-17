@@ -4,8 +4,9 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const mapContainerStyle = {
-  width: '130%',
-  height: '500px',
+  width: '100%',
+  height: '400px',
+  marginBottom: '2rem',
 };
 
 // Coordinates of the Voronezh DSR office

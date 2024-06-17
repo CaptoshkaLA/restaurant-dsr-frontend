@@ -29,26 +29,30 @@ const AdminDashboard: React.FC = () => {
         Admin Dashboard
       </Typography>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item>
-          <Button variant={activeSection === 'reservations' ? 'contained' : 'outlined'} onClick={() => handleSectionChange('reservations')}>
+          <Grid item xs={12} sm={4}>
+            <Button variant={activeSection === 'reservations' ? 'contained' : 'outlined'} fullWidth onClick={() => handleSectionChange('reservations')}>
             Reservations
           </Button>
         </Grid>
-        <Grid item>
-          <Button variant={activeSection === 'addDish' ? 'contained' : 'outlined'} onClick={() => handleSectionChange('addDish')}>
+          <Grid item xs={12} sm={4}>
+            <Button variant={activeSection === 'addDish' ? 'contained' : 'outlined'} fullWidth onClick={() => handleSectionChange('addDish')}>
             Add Dish
           </Button>
         </Grid>
-        <Grid item>
-          <Button variant={activeSection === 'currentDishes' ? 'contained' : 'outlined'} onClick={() => handleSectionChange('currentDishes')}>
+          <Grid item xs={12} sm={4}>
+            <Button variant={activeSection === 'currentDishes' ? 'contained' : 'outlined'} fullWidth onClick={() => handleSectionChange('currentDishes')}>
             Current Dishes
           </Button>
         </Grid>
       </Grid>
 
+        <Grid container spacing={2} justifyContent="center" style={{ marginTop: '1rem' }}>
+          <Grid item xs={12}>
       {activeSection === 'reservations' && <ReservationList reservations={reservations} />}
       {activeSection === 'addDish' && <DishForm dishes={dishes} />}
       {activeSection === 'currentDishes' && <CurrentDishes dishes={dishes} />}
+          </Grid>
+        </Grid>
     </Container>
   );
 };

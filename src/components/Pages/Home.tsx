@@ -11,7 +11,7 @@ const Home: React.FC = () => {
         Since 1998, DSR has been providing services for the preparation of complex dishes for companies of any level, from startups to world-famous brands. In cooperation, we become part of the client's team, his goal becomes ours.
       </Typography>
       <Grid container spacing={2} sx={{ marginTop: '1rem' }}>
-        <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
           <Card sx={{ maxWidth: '100%', height: '100%' }}>
             <CardMedia
               component="img"
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
             />
           </Card>
         </Grid>
-        <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
           <Card sx={{ maxWidth: '100%', height: '100%' }}>
             <CardMedia
               component="img"
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
             />
           </Card>
         </Grid>
-        <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
           <Card sx={{ maxWidth: '100%', height: '100%' }}>
             <CardMedia
               component="img"
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
             />
           </Card>
         </Grid>
-        <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
           <Card sx={{ maxWidth: '100%', height: '100%' }}>
             <CardMedia
               component="img"
