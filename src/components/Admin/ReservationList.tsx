@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
 import { updateReservationStatus } from '../../store/reservationSlice';
-import {ThunkDispatch} from "@reduxjs/toolkit";
+import { ThunkDispatch } from '@reduxjs/toolkit';
 
 interface ReservationListProps {
   reservations: any[];
@@ -11,7 +11,7 @@ interface ReservationListProps {
 const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const handleStatusChange = (id: number, status: 'PENDING' | 'PROCESSED') => {
+  const handleStatusChange = (id: number, status: 'CONFIRMED' | 'REJECTED') => {
     dispatch(updateReservationStatus({ id, status }));
   };
 
@@ -41,9 +41,14 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
             <TableCell>{reservation.status}</TableCell>
             <TableCell>
               <Button
-                onClick={() => handleStatusChange(reservation.id, reservation.status === 'PENDING' ? 'PROCESSED' : 'PENDING')}
+                onClick={() => handleStatusChange(reservation.id, 'CONFIRMED')}
               >
-                {reservation.status === 'PENDING' ? 'Mark as Processed' : 'Mark as Pending'}
+                Mark as Confirmed
+              </Button>
+              <Button
+                onClick={() => handleStatusChange(reservation.id, 'REJECTED')}
+              >
+                Mark as Rejected
               </Button>
             </TableCell>
           </TableRow>

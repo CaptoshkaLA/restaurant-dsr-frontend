@@ -9,7 +9,7 @@ interface Reservation {
   date: string;
   time: string;
   guests: number;
-  status?: 'PENDING' | 'PROCESSED';
+  status?: 'PENDING' | 'CONFIRMED' | 'REJECTED';
 }
 
 interface ReservationState {
@@ -62,7 +62,7 @@ export const addReservation = createAsyncThunk(
 
 export const updateReservationStatus = createAsyncThunk(
   'reservations/updateReservationStatus',
-  async ({ id, status }: { id: number; status: 'PENDING' | 'PROCESSED' }) => {
+  async ({ id, status }: { id: number; status: 'PENDING' | 'CONFIRMED' | 'REJECTED' }) => {
     const response = await axios.put(`${process.env.REACT_APP_API_URL}/reservations/${id}/status`, { status }, getAuthHeader());
     return response.data;
   }
