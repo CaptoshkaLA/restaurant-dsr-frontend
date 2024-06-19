@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Box, Button } from '@mui/material';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
@@ -23,6 +23,22 @@ const ContactInfo: React.FC = () => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey,
   });
+
+  useEffect(() => {
+    // Temporary workaround to suppress defaultProps warning
+    const originalConsoleError = console.error;
+    console.error = (message: string, ...args: any[]) => {
+      if (typeof message === 'string' && message.includes('defaultProps will be removed')) {
+        return;
+      }
+      originalConsoleError(message, ...args);
+    };
+
+    return () => {
+      // Restore original console.error
+      console.error = originalConsoleError;
+    };
+  }, []);
 
   if (loadError) return <Typography>Error loading maps</Typography>;
 
