@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Typography, Grid, Box, Button } from '@mui/material';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
 const mapContainerStyle = {
@@ -19,8 +19,12 @@ const ContactInfo: React.FC = () => {
   const [mapType, setMapType] = useState<'google' | 'yandex'>('google');
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '';
   const yandexMapsApiKey = process.env.REACT_APP_YANDEX_MAPS_API_KEY || '';
-  console.log('googleMapsApiKey: ' + googleMapsApiKey)
-  console.log('yandexMapsApiKey: ' + yandexMapsApiKey)
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey,
+  });
+
+  if (loadError) return <Typography>Error loading maps</Typography>;
 
   return (
     <Container sx={{ marginTop: '1rem' }}>
@@ -67,18 +71,18 @@ const ContactInfo: React.FC = () => {
               Yandex Maps
             </Button>
           </Box>
-          {mapType === 'google' ? (
-            <LoadScript googleMapsApiKey={googleMapsApiKey}>
+            {mapType === 'google' && isLoaded ? (
               <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
                 <Marker position={center} />
               </GoogleMap>
-            </LoadScript>
-          ) : (
-            <YMaps query={{ apikey: yandexMapsApiKey, load: "package.full" }}>
+            ) : mapType === 'yandex' ? (
+                <YMaps query={{ apikey: yandexMapsApiKey, load: 'package.full' }}>
               <Map defaultState={{ center: [center.lat, center.lng], zoom: 10 }} style={mapContainerStyle}>
                 <Placemark geometry={[center.lat, center.lng]} />
               </Map>
             </YMaps>
+            ) : (
+                <Typography>Loading...</Typography>
           )}
         </Grid>
       </Grid>
