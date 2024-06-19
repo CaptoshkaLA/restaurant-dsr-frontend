@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Typography, Grid, Box, Button } from '@mui/material';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
 const mapContainerStyle = {
   width: '100%',
@@ -74,7 +74,7 @@ const ContactInfo: React.FC = () => {
               </GoogleMap>
             </LoadScript>
           ) : (
-            <YMaps query={{ apikey: yandexMapsApiKey }}>
+            <YMaps query={{ apikey: yandexMapsApiKey, load: "package.full" }}>
               <Map defaultState={{ center: [center.lat, center.lng], zoom: 10 }} style={mapContainerStyle}>
                 <Placemark geometry={[center.lat, center.lng]} />
               </Map>
